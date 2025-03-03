@@ -1,3 +1,5 @@
+import java.util.Properties
+
 /*
  * Copyright (C) 2022 The Android Open Source Project
  *
@@ -24,6 +26,20 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+val localProps = Properties()
+val localPropertiesFile = File(rootProject.rootDir, "openweather.properties")
+if (localPropertiesFile.exists() && localPropertiesFile.isFile){
+    localPropertiesFile.inputStream().use {
+        localProps.load(it)
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 android {
     namespace = "com.trp.care_weather"
     compileSdk = 35
@@ -32,8 +48,8 @@ android {
         applicationId = "com.trp.care_weather"
         minSdk = 21
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 1000000
+        versionName = "1.0.0-0"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -47,8 +63,13 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "retrofit2.pro")
+            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_PRD"))
+        }
+        getByName("debug") {
+            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_DEV"))
         }
     }
 
@@ -67,9 +88,10 @@ android {
         buildConfig = false
         renderScript = false
         shaders = false
+        buildConfig = true
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
