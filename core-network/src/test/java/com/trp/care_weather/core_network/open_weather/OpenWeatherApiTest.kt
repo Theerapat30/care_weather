@@ -47,8 +47,22 @@ class OpenWeatherApiTest {
     }
 
     @Test
-    fun getCurrentWeather_correctLocation_shouldReturnData() = runTest{
+    fun getCurrentWeather_correctInput_shouldReturnData() = runTest{
         val model = openWeatherApi!!.getCurrentWeather(latitude = lat, longitude = lon, key = key)
+        println(model)
+        Assert.assertNotNull(model)
+    }
+
+    @Test
+    fun getForecastWeather_correctInput_shouldReturnData() = runTest {
+        val model = openWeatherApi!!.getForecastWeather(latitude = lat, longitude = lon, key = key)
+        println(model)
+        Assert.assertNotNull(model)
+    }
+
+    @Test
+    fun getCurrentAirPollution_correctInput_shouldReturnData() = runTest {
+        val model = openWeatherApi!!.getCurrentAirPollution(latitude = lat, longitude = lon, key = key)
         println(model)
         Assert.assertNotNull(model)
     }
