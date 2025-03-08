@@ -23,10 +23,10 @@ plugins {
 
 android {
     namespace = "com.trp.care_weather.core.data"
-    compileSdk = 35
+    compileSdk = libs.versions.comileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.comileSdk.get().toInt()
 
         testInstrumentationRunner = "com.trp.care_weather.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -51,6 +51,8 @@ android {
 
 dependencies {
     implementation(project(":core-database"))
+    implementation(project(":core-network"))
+    implementation(project(":core-utils"))
 
     // Arch Components
     implementation(libs.hilt.android)

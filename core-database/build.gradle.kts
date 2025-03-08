@@ -24,10 +24,10 @@ plugins {
 
 android {
     namespace = "com.trp.care_weather.core.database"
-    compileSdk = 35
+    compileSdk = libs.versions.comileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "com.trp.care_weather.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")

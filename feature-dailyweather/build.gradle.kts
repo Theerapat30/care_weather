@@ -24,10 +24,10 @@ plugins {
 
 android {
     namespace = "com.trp.care_weather.feature.dailyweather"
-    compileSdk = 35
+    compileSdk = libs.versions.comileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "com.trp.care_weather.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -74,6 +74,10 @@ dependencies {
     // Instrumented tests
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // GPS Location
+    implementation(libs.com.google.accompanist.accompanist.permissions)
+    implementation(libs.com.google.android.gms.play.service.location)
 
     // Hilt Dependency Injection
     implementation(libs.hilt.android)

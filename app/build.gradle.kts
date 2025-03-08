@@ -42,14 +42,14 @@ java {
 
 android {
     namespace = "com.trp.care_weather"
-    compileSdk = 35
+    compileSdk = libs.versions.comileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.trp.care_weather"
-        minSdk = 21
-        targetSdk = 35
-        versionCode = 1000000
-        versionName = "1.0.0-0"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         vectorDrawables {
             useSupportLibrary = true
@@ -96,6 +96,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    dynamicFeatures += setOf(":core-utils")
 }
 
 dependencies {
