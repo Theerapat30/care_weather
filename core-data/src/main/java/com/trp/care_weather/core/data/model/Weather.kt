@@ -5,35 +5,13 @@ import com.trp.core_utils.MessageUtils
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-data class Weather (
-    val date: LocalDateTime = LocalDateTime.now(),
-    val locationName: String,
-    val temp: Temp,
-    val tempForecastList: List<Temp>,
-    val mainWeather: String,
-    val weatherDesc: String,
-    val wind: Wind,
-//    val rain: Rain,
-    val clouds: Clouds,
-    val airPollution: AirPollution,
-){
-    val dateRepresent get() = "${MessageUtils.makeWord(date.dayOfWeek.name)}, ${date.dayOfMonth} ${MessageUtils.makeWord(date.month.name)}"
-
-    fun forecastWeathersFromCurrentTime(): List<Temp>{
-        val now = LocalTime.now()
-        return tempForecastList.filter { item ->
-            DateUtils.isTimeAfterHour(hour = 3, time = now, specificTime = item.localTime)
-        }
-    }
-}
-
 data class Temp(
     val temp: Double,
     val tempFeels: Double,
     val tempMax: Double,
     val tempMin: Double,
-    val dateTime: Long = DateUtils.dateToUtc(LocalDateTime.now())
-//    val dateTime: LocalDateTime = LocalDateTime.now()
+    val dateTime: Long = DateUtils.dateToUtc(LocalDateTime.now()),
+    val locationName: String? = null
 ){
     val tempDisplay get() = "$temp  ํ"
     val tempFeelsDisplay get() = "$tempFeels  ํ"
@@ -51,6 +29,11 @@ data class Temp(
     }
 
     val localTime: LocalTime get() = DateUtils.utcToDate(dateTime).toLocalTime()
+
+    val dateRepresent get() = run {
+        val date = DateUtils.utcToDate(dateTime)
+        "${MessageUtils.makeWord(date.dayOfWeek.name)}, ${date.dayOfMonth} ${MessageUtils.makeWord(date.month.name)}"
+    }
 }
 
 data class AirPollution(

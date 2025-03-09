@@ -16,6 +16,10 @@
 
 package com.trp.care_weather.core.data.di
 
+import com.trp.care_weather.core.data.AirPollutionNetworkRepository
+import com.trp.care_weather.core.data.AirPollutionRepository
+import com.trp.care_weather.core.data.CurrentWeatherNetworkRepository
+import com.trp.care_weather.core.data.CurrentWeatherRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,12 +28,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import com.trp.care_weather.core.data.DailyWeatherRepository
 import com.trp.care_weather.core.data.DefaultDailyWeatherRepository
+import com.trp.care_weather.core.data.ForecastWeatherNetworkRepository
+import com.trp.care_weather.core.data.ForecastWeatherRepository
 import com.trp.care_weather.core.data.model.AirPollution
 import com.trp.care_weather.core.data.model.AqiStatus
 import com.trp.care_weather.core.data.model.Clouds
 import com.trp.care_weather.core.data.model.Rain
 import com.trp.care_weather.core.data.model.Temp
-import com.trp.care_weather.core.data.model.Weather
+import com.trp.care_weather.core.data.model.DailyWeather
 import com.trp.care_weather.core.data.model.Wind
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,6 +49,25 @@ interface DataModule {
     fun bindsDailyWeatherRepository(
         dailyWeatherRepository: DefaultDailyWeatherRepository
     ): DailyWeatherRepository
+
+    @Singleton
+    @Binds
+    fun bindsCurrentWeatherRepository(
+        currentWeatherRepository: CurrentWeatherNetworkRepository
+    ): CurrentWeatherRepository
+
+    @Singleton
+    @Binds
+    fun bindsForecastWeatherRepository(
+        forecastWeatherRepository: ForecastWeatherNetworkRepository
+    ): ForecastWeatherRepository
+
+    @Singleton
+    @Binds
+    fun bindsAirPollutionRepository(
+        airPollutionRepository: AirPollutionNetworkRepository
+    ): AirPollutionRepository
+
 }
 
 class FakeDailyWeatherRepository @Inject constructor() : DailyWeatherRepository {
@@ -59,7 +84,8 @@ val tempDummy = Temp(
     temp = 14.5,
     tempFeels = 15.0,
     tempMax = 18.0,
-    tempMin = 12.0
+    tempMin = 12.0,
+    locationName = "Bangkok",
 )
 
 val windDummy = Wind(
@@ -121,14 +147,8 @@ val tempForecastDummy = listOf(
     ),
 )
 
-val weatherDummy = Weather(
-    locationName = "Bangkok",
+val weatherDummy = DailyWeather(
     temp = tempDummy,
-    mainWeather = "",
-    weatherDesc = "",
-    wind = windDummy,
-//    rain = rainDummy,
-    clouds = cloudsDummy,
     airPollution = airPollutionDummy,
     tempForecastList = tempForecastDummy
 )

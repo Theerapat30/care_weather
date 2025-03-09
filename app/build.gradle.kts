@@ -96,7 +96,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    dynamicFeatures += setOf(":core-utils")
+//    dynamicFeatures += setOf(":core-utils")
 }
 
 dependencies {

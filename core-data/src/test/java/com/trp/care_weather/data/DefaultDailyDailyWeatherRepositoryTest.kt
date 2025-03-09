@@ -31,7 +31,7 @@ import com.trp.care_weather.core.database.DailyWeatherDao
  * Unit tests for [DefaultDailyWeatherRepository].
  */
 @OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class DefaultDailyWeatherRepositoryTest {
+class DefaultDailyDailyWeatherRepositoryTest {
 
     @Test
     fun dailyWeathers_newItemSaved_itemIsReturned() = runTest {

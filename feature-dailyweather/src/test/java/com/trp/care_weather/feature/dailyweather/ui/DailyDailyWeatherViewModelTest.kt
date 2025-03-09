@@ -34,7 +34,7 @@ import com.trp.care_weather.feature.dailyweather.ui.DailyWeatherViewModel
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class DailyWeatherViewModelTest {
+class DailyDailyWeatherViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {
         val viewModel = DailyWeatherViewModel(FakeDailyWeatherRepository())
