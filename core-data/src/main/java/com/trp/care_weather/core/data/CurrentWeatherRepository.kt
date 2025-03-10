@@ -2,6 +2,7 @@ package com.trp.care_weather.core.data
 
 import android.net.http.HttpException
 import com.trp.care_weather.core.data.model.Temp
+import com.trp.care_weather.core_network.di.OpenWeatherApiKey
 import com.trp.care_weather.core_network.open_weather.OpenWeatherApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,15 +16,14 @@ interface CurrentWeatherRepository{
 }
 
 class CurrentWeatherNetworkRepository @Inject constructor(
-    private val openWeatherApi: OpenWeatherApi
+    private val openWeatherApi: OpenWeatherApi,
+    @OpenWeatherApiKey private val openWeatherApiKey: String
 ) : CurrentWeatherRepository{
-
-    private val key = "69a4ded70025da0552029cfce527d0c4"
 
     override suspend fun getWeather(locationName: String): Result<Temp> {
         return withContext(Dispatchers.IO){
             try {
-                val weatherApiModel = openWeatherApi.getCurrentWeather(location = locationName, key = key)
+                val weatherApiModel = openWeatherApi.getCurrentWeather(location = locationName, key = openWeatherApiKey)
                 Result.Success(Temp(
                     temp = weatherApiModel.tempMainApiModel.temp,
                     tempFeels = weatherApiModel.tempMainApiModel.feelsLike,
@@ -47,7 +47,7 @@ class CurrentWeatherNetworkRepository @Inject constructor(
                 val weatherApiModel = openWeatherApi.getCurrentWeather(
                     latitude = latitude.toString(),
                     longitude = longitude.toString(),
-                    key = key
+                    key = openWeatherApiKey
                 )
                 Result.Success(Temp(
                     temp = weatherApiModel.tempMainApiModel.temp,

@@ -3,6 +3,7 @@ package com.trp.care_weather.core.data
 import android.net.http.HttpException
 import com.trp.care_weather.core.data.model.AirPollution
 import com.trp.care_weather.core.data.model.AqiStatus
+import com.trp.care_weather.core_network.di.OpenWeatherApiKey
 import com.trp.care_weather.core_network.open_weather.AirPollutionApiModel
 import com.trp.care_weather.core_network.open_weather.AirPollutionListItemApiModel
 import com.trp.care_weather.core_network.open_weather.OpenWeatherApi
@@ -17,15 +18,14 @@ interface AirPollutionRepository {
 }
 
 class AirPollutionNetworkRepository @Inject constructor(
-    private val openWeatherApi: OpenWeatherApi
+    private val openWeatherApi: OpenWeatherApi,
+    @OpenWeatherApiKey private val openWeatherApiKey: String
 ) : AirPollutionRepository{
-
-    private val key = "69a4ded70025da0552029cfce527d0c4"
 
     override suspend  fun getAirPollution(latitude: Double, longitude: Double): Result<AirPollution> {
         return withContext(Dispatchers.IO){
             try {
-                val apiModel: AirPollutionApiModel = openWeatherApi.getCurrentAirPollution(latitude = latitude.toString(), longitude = longitude.toString(), key = key)
+                val apiModel: AirPollutionApiModel = openWeatherApi.getCurrentAirPollution(latitude = latitude.toString(), longitude = longitude.toString(), key = openWeatherApiKey)
                 val airPollutionItem: AirPollutionListItemApiModel = apiModel.list[0]
                 Result.Success(AirPollution(
                     aqi = toAqiStatus(airPollutionItem.main.aqi),

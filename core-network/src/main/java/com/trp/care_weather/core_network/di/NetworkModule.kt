@@ -1,6 +1,7 @@
 package com.trp.care_weather.core_network.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.trp.care_weather.core_network.BuildConfig
 import com.trp.care_weather.core_network.open_weather.OpenWeatherApi
 import dagger.Module
 import dagger.Provides
@@ -11,6 +12,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -42,4 +44,14 @@ class NetworkModule {
             .build()
     }
 
+    @OpenWeatherApiKey
+    @Provides
+    fun provideOpenWeatherApiKey() : String{
+        return BuildConfig.API_KEY
+    }
+
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class OpenWeatherApiKey

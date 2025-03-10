@@ -26,14 +26,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-val localProps = Properties()
-val localPropertiesFile = File(rootProject.rootDir, "openweather.properties")
-if (localPropertiesFile.exists() && localPropertiesFile.isFile){
-    localPropertiesFile.inputStream().use {
-        localProps.load(it)
-    }
-}
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -66,10 +58,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "retrofit2.pro")
-            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_PRD"))
         }
         getByName("debug") {
-            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_DEV"))
+
         }
     }
 
@@ -88,7 +79,6 @@ android {
         buildConfig = false
         renderScript = false
         shaders = false
-        buildConfig = true
     }
 
     packaging {

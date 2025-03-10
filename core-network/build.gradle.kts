@@ -1,9 +1,19 @@
+import java.util.Properties
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
+}
+
+val localProps = Properties()
+val localPropertiesFile = File(rootProject.rootDir, "openweather.properties")
+if (localPropertiesFile.exists() && localPropertiesFile.isFile){
+    localPropertiesFile.inputStream().use {
+        localProps.load(it)
+    }
 }
 
 android {
@@ -17,9 +27,18 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildTypes {
+        getByName("release") {
+            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_PRD"))
+        }
+        getByName("debug") {
+            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_DEV"))
+        }
+    }
+
     buildFeatures {
         aidl = false
-        buildConfig = false
+        buildConfig = true
         renderScript = false
         shaders = false
     }
