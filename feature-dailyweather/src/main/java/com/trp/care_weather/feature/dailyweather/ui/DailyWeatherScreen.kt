@@ -68,6 +68,7 @@ import kotlinx.coroutines.launch
 fun DailyWeatherScreen(
     viewModel: DailyWeatherViewModel = hiltViewModel()
 ){
+    val tag = "DailyWeatherScreen"
     val context = LocalContext.current
 
     val locationClient: FusedLocationProviderClient = remember {
@@ -75,27 +76,28 @@ fun DailyWeatherScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    Log.d("TAG", "HomeScreen uiState...")
+    Log.d(tag, "HomeScreen uiState...")
 
     val locationListener: OnSuccessListener<Location> = OnSuccessListener<Location>{ location ->
+        Log.d(tag, "DailyWeatherScreen: fetching weather")
         viewModel.fetchWeather(latitude = location.latitude, longitude = location.longitude)
     }
 
-    if (uiState.dailyWeather == null){
+    if (uiState.dailyWeather != null){
+        DailyWeatherScreen(
+            dailyWeather = uiState.dailyWeather!!,
+            onRefresh = {
+                locationClient.lastLocation.addOnSuccessListener(locationListener)
+            },
+            isRefreshing = uiState.isFetchingWeather,
+            versionName = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES).versionName,
+            onNavigateToForecastWeather = {}
+        )
+    } else {
         locationClient.lastLocation.addOnSuccessListener(locationListener)
         NoWeatherDataScreen()
-        return
     }
 
-    DailyWeatherScreen(
-        dailyWeather = uiState.dailyWeather!!,
-        onRefresh = {
-            locationClient.lastLocation.addOnSuccessListener(locationListener)
-        },
-        isRefreshing = uiState.isFetchingWeather,
-        versionName = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES).versionName,
-        onNavigateToForecastWeather = {}
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
