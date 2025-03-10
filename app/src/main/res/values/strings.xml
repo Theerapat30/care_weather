@@ -16,4 +16,5 @@
 
 <resources>
     <string name="app_name">CareWeather</string>
+    <string name="title_core_utils">Core Utils</string>
 </resources>

@@ -30,7 +30,7 @@ fun MainNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { DailyWeatherScreen(modifier = Modifier.padding(16.dp)) }
-        // TODO: Add more destinations
+        composable("main") { DailyWeatherScreen() }
+//         TODO: Add more destinations
     }
 }
