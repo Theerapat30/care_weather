@@ -54,7 +54,8 @@ class CurrentWeatherNetworkRepository @Inject constructor(
                     tempFeels = weatherApiModel.tempMainApiModel.feelsLike,
                     tempMax = weatherApiModel.tempMainApiModel.tempMax,
                     tempMin = weatherApiModel.tempMainApiModel.tempMin,
-                    dateTime = weatherApiModel.dt
+                    dateTime = weatherApiModel.dt,
+                    locationName = weatherApiModel.name
                 ))
             } catch (e: HttpException){
                 Result.Error(e)
