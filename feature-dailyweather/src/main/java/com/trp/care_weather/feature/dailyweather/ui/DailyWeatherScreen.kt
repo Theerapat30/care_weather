@@ -66,7 +66,8 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun DailyWeatherScreen(
-    viewModel: DailyWeatherViewModel = hiltViewModel()
+    viewModel: DailyWeatherViewModel = hiltViewModel(),
+    onNavigateToForecastWeather: (Long, Double, Double) -> Unit,
 ){
     val tag = "DailyWeatherScreen"
     val context = LocalContext.current
@@ -91,7 +92,9 @@ fun DailyWeatherScreen(
             },
             isRefreshing = uiState.isFetchingWeather,
             versionName = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES).versionName,
-            onNavigateToForecastWeather = {}
+            onNavigateToForecastWeather = { temp ->
+                onNavigateToForecastWeather(temp.dateTime, viewModel.latitude, viewModel.longitude)
+            }
         )
     } else {
         locationClient.lastLocation.addOnSuccessListener(locationListener)

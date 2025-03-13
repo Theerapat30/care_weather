@@ -92,6 +92,7 @@ android {
 dependencies {
     implementation(project(":core-ui"))
     implementation(project(":feature-dailyweather"))
+    implementation(project(":feature-forecastweather"))
 
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)
