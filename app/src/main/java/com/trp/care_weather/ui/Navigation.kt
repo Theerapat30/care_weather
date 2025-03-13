@@ -16,21 +16,35 @@
 
 package com.trp.care_weather.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.trp.care_weather.feature.dailyweather.navigation.DailyWeatherRoute
 import com.trp.care_weather.feature.dailyweather.ui.DailyWeatherScreen
+import com.trp.care_weather.feature.forecastweather.navigation.ForecastWeatherRoute
+import com.trp.care_weather.feature.forecastweather.ui.ForecastWeatherScreen
 
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "main") {
-        composable("main") { DailyWeatherScreen() }
-//         TODO: Add more destinations
+    NavHost(navController = navController, startDestination = DailyWeatherRoute) {
+        composable<DailyWeatherRoute> {
+            DailyWeatherScreen(
+                onNavigateToForecastWeather = {dateTime, lat, lon ->
+                    navController.navigate(
+                        route = ForecastWeatherRoute(dateTime = dateTime, latitude = lat, longitude = lon)
+                    )
+                }
+            )
+        }
+        composable<ForecastWeatherRoute> {
+            ForecastWeatherScreen(
+                onBackStack = {
+                    navController.popBackStack()
+                }
+            )
+        }
     }
 }
