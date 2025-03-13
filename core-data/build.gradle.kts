@@ -23,10 +23,10 @@ plugins {
 
 android {
     namespace = "com.trp.care_weather.core.data"
-    compileSdk = 35
+    compileSdk = libs.versions.comileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "com.trp.care_weather.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -51,14 +51,24 @@ android {
 
 dependencies {
     implementation(project(":core-database"))
+    implementation(project(":core-network"))
+    implementation(project(":core-utils"))
 
     // Arch Components
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    kaptTest(libs.hilt.android.compiler)
 
     implementation(libs.kotlinx.coroutines.android)
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.kotlin)
+
+    testImplementation(libs.retrofit.client)
+    testImplementation(libs.retrofit.serialization.converter)
+    testImplementation(libs.okhttp3.okhttp)
+    testImplementation(libs.kotlinx.serialization.json)
+
 }

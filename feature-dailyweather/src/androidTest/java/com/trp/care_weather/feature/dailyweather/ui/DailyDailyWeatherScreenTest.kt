@@ -30,7 +30,7 @@ import org.junit.runner.RunWith
  * UI tests for [DailyWeatherScreen].
  */
 @RunWith(AndroidJUnit4::class)
-class DailyWeatherScreenTest {
+class DailyDailyWeatherScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()

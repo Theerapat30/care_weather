@@ -18,33 +18,65 @@ package com.trp.care_weather.core.ui
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+val latoFamily = FontFamily(
+    Font(R.font.lato_regular, FontWeight.Normal)
+)
+
+val fontFamilySelected = latoFamily
+
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+    headlineLarge = TextStyle(
+        fontFamily = fontFamilySelected,
+        fontWeight = FontWeight.Normal,
+        fontSize = 36.sp,
+        lineHeight = 40.sp,
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = fontFamilySelected,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        lineHeight = 40.sp,
+        letterSpacing = 4.sp
+    ),
+    titleLarge = TextStyle(
+        fontFamily = fontFamilySelected,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        letterSpacing = 2.sp
+    ),
+    titleMedium = TextStyle(
+        fontFamily = fontFamilySelected,
         fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 2.sp
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = fontFamilySelected,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+    bodyMedium = TextStyle(
+        fontFamily = fontFamilySelected,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = fontFamilySelected,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.sp
     )
-    */
 )

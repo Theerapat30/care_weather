@@ -23,12 +23,12 @@ plugins {
 
 android {
     namespace = "com.trp.care_weather.test.navigation"
-    compileSdk = 35
+    compileSdk = libs.versions.comileSdk.get().toInt()
     targetProjectPath = ":app"
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 35
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
 
         testInstrumentationRunner = "com.trp.care_weather.core.testing.HiltTestRunner"
     }

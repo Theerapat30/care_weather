@@ -26,14 +26,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-val localProps = Properties()
-val localPropertiesFile = File(rootProject.rootDir, "openweather.properties")
-if (localPropertiesFile.exists() && localPropertiesFile.isFile){
-    localPropertiesFile.inputStream().use {
-        localProps.load(it)
-    }
-}
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -42,14 +34,14 @@ java {
 
 android {
     namespace = "com.trp.care_weather"
-    compileSdk = 35
+    compileSdk = libs.versions.comileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.trp.care_weather"
-        minSdk = 21
-        targetSdk = 35
-        versionCode = 1000000
-        versionName = "1.0.0-0"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         vectorDrawables {
             useSupportLibrary = true
@@ -66,10 +58,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "retrofit2.pro")
-            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_PRD"))
         }
         getByName("debug") {
-            buildConfigField("String", "API_KEY", localProps.getProperty("API_KEY_DEV"))
+
         }
     }
 
@@ -88,7 +79,6 @@ android {
         buildConfig = false
         renderScript = false
         shaders = false
-        buildConfig = true
     }
 
     packaging {
@@ -96,11 +86,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+//    dynamicFeatures += setOf(":core-utils")
 }
 
 dependencies {
     implementation(project(":core-ui"))
     implementation(project(":feature-dailyweather"))
+    implementation(project(":feature-forecastweather"))
 
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)
