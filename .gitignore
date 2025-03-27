@@ -37,3 +37,5 @@ google-services.json
 .kotlin
 
 keystore.properties
+
+app/release/
