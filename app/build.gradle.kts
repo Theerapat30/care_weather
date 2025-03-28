@@ -1,3 +1,4 @@
+import java.io.FileInputStream
 import java.util.Properties
 
 /*
@@ -32,7 +33,20 @@ java {
     }
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 android {
+
+    signingConfigs {
+        create("prd-signing") {
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+        }
+    }
     namespace = "com.trp.care_weather"
     compileSdk = libs.versions.comileSdk.get().toInt()
 
@@ -46,6 +60,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        resourceConfigurations += setOf()
 
         // Enable room auto-migrations
         ksp {
@@ -54,13 +69,15 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
+            isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "retrofit2.pro")
+            signingConfig = signingConfigs.getByName("prd-signing")
         }
-        getByName("debug") {
-
+        debug {
+            isDebuggable = true
         }
     }
 
