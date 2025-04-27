@@ -27,10 +27,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+kotlin {
+    jvmToolchain(libs.versions.jvmVersion.get().toInt())
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -82,12 +80,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = rootProject.extra["sourceCompatibility"] as JavaVersion
+        targetCompatibility = rootProject.extra["targetCompatibility"] as JavaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = libs.versions.jvmVersion.get()
     }
 
     buildFeatures {
