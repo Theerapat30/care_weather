@@ -8,6 +8,10 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+kotlin {
+    jvmToolchain(libs.versions.jvmVersion.get().toInt())
+}
+
 val localProps = Properties()
 val localPropertiesFile = File(rootProject.rootDir, "openweather.properties")
 if (localPropertiesFile.exists() && localPropertiesFile.isFile){
@@ -44,11 +48,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = rootProject.extra["sourceCompatibility"] as JavaVersion
+        targetCompatibility = rootProject.extra["targetCompatibility"] as JavaVersion
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = libs.versions.jvmVersion.get()
     }
 }
 

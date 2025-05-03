@@ -23,6 +23,10 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+kotlin {
+    jvmToolchain(libs.versions.jvmVersion.get().toInt())
+}
+
 android {
     namespace = "com.trp.care_weather.feature.dailyweather"
     compileSdk = libs.versions.comileSdk.get().toInt()
@@ -43,12 +47,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = rootProject.extra["sourceCompatibility"] as JavaVersion
+        targetCompatibility = rootProject.extra["targetCompatibility"] as JavaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = libs.versions.jvmVersion.get()
     }
 }
 

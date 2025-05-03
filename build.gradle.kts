@@ -13,5 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+val sourceCompatibility by extra(JavaVersion.VERSION_21)
+val targetCompatibility by extra(JavaVersion.VERSION_21)
 
 // Root build.gradle.kts
+//tasks.named<UpdateDaemonJvm>("updateDaemonJvm"){
+//    languageVersion = JavaLanguageVersion.of(17)
+//}
