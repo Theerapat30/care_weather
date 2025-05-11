@@ -3,8 +3,8 @@
 minSdk = "26"
 comileSdk = "35"
 targetSdk = "35"
-versionCode = "2"
-versionName = "1.0.0-1"
+versionCode = "3"
+versionName = "1.0.0-2"
 
 jvmVersion = "21"
 androidGradlePlugin = "8.9.2"
