@@ -1,5 +1,6 @@
 import java.io.FileInputStream
 import java.util.Properties
+import java.util.*
 
 /*
  * Copyright (C) 2022 The Android Open Source Project
@@ -35,6 +36,14 @@ val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
+val versionMajor = libs.versions.versionMajor.get().toInt()
+val versionMinor = libs.versions.versionMinor.get().toInt()
+val versionPatch = libs.versions.versionPatch.get().toInt()
+val versionBuild = libs.versions.versionBuild.get().toInt()
+
+val versionAppCode = versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
+val versionAppName = "$versionMajor.$versionMinor.$versionPatch-$versionBuild"
+
 android {
 
     signingConfigs {
@@ -52,8 +61,8 @@ android {
         applicationId = "com.trp.care_weather"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
+        versionCode = versionAppCode
+        versionName = versionAppName
         setProperty("archivesBaseName", "care-weather-${defaultConfig.versionName}")
 
         vectorDrawables {
