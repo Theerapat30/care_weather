@@ -1,5 +1,6 @@
 package com.trp.care_weather.core_domain
 
+import android.util.Log
 import com.trp.care_weather.core.data.AirPollutionRepository
 import com.trp.care_weather.core.data.CurrentWeatherRepository
 import com.trp.care_weather.core.data.ForecastWeatherRepository
@@ -13,6 +14,7 @@ import javax.inject.Inject
 
 interface GetDailyWeatherUseCase {
     suspend fun invoke(latitude: Double, longitude: Double): DailyWeather
+    suspend fun findByLocationName(locationName: String): DailyWeather?
 }
 
 class GetDailyWeatherNetworkUseCase @Inject constructor(
@@ -20,6 +22,7 @@ class GetDailyWeatherNetworkUseCase @Inject constructor(
     private val forecastWeatherRepository: ForecastWeatherRepository,
     private val airPollutionRepository: AirPollutionRepository,
 ): GetDailyWeatherUseCase {
+    private val TAG = GetDailyWeatherNetworkUseCase::class.java.simpleName
 
     override suspend fun invoke(latitude: Double, longitude: Double): DailyWeather = withContext(Dispatchers.Default){
         var currentWeather: Temp? = null
@@ -36,6 +39,35 @@ class GetDailyWeatherNetworkUseCase @Inject constructor(
 
         var airPollution: AirPollution? = null
         val airPollutionResult = airPollutionRepository.getAirPollution(latitude = latitude, longitude = longitude)
+        if (airPollutionResult is Result.Success){
+            airPollution = airPollutionResult.data
+        }
+
+        DailyWeather(
+            temp = currentWeather,
+            tempForecastList = forecastWeatherList,
+            airPollution = airPollution
+        )
+    }
+
+    override suspend fun findByLocationName(locationName: String): DailyWeather? = withContext(Dispatchers.Default){
+        var currentWeather: Temp?
+        val currentWeatherResult = currentWeatherRepository.getWeather(locationName)
+        if (currentWeatherResult is Result.Success){
+            currentWeather = currentWeatherResult.data
+        } else {
+            Log.e(TAG, "findByLocationName: ${(currentWeatherResult as Result.Error).exception}", )
+            return@withContext null
+        }
+
+        var forecastWeatherList: List<Temp>? = null
+        val forecastWeatherResult = forecastWeatherRepository.getWeathers(latitude = currentWeather.lat!!, longitude = currentWeather.lon!!)
+        if (forecastWeatherResult is Result.Success){
+            forecastWeatherList = forecastWeatherResult.data
+        }
+
+        var airPollution: AirPollution? = null
+        val airPollutionResult = airPollutionRepository.getAirPollution(latitude = currentWeather.lat!!, longitude = currentWeather.lon!!)
         if (airPollutionResult is Result.Success){
             airPollution = airPollutionResult.data
         }

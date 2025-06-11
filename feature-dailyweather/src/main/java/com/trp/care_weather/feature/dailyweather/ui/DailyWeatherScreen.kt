@@ -68,6 +68,7 @@ import kotlinx.coroutines.launch
 fun DailyWeatherScreen(
     viewModel: DailyWeatherViewModel = hiltViewModel(),
     onNavigateToForecastWeather: (Long, Double, Double) -> Unit,
+    onNavigateToLocationWeather: () -> Unit
 ){
     val tag = "DailyWeatherScreen"
     val context = LocalContext.current
@@ -94,7 +95,8 @@ fun DailyWeatherScreen(
             versionName = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES).versionName,
             onNavigateToForecastWeather = { temp ->
                 onNavigateToForecastWeather(temp.dateTime, viewModel.latitude, viewModel.longitude)
-            }
+            },
+            onNavigateToLocationWeather = onNavigateToLocationWeather
         )
     } else {
         locationClient.lastLocation.addOnSuccessListener(locationListener)
@@ -112,6 +114,7 @@ internal fun DailyWeatherScreen(
     isRefreshing: Boolean,
     versionName: String? = "unknown",
     onNavigateToForecastWeather: (Temp) -> Unit,
+    onNavigateToLocationWeather: () -> Unit,
 ){
     val screenHorizontalPadding = 20.dp
 
@@ -138,7 +141,7 @@ internal fun DailyWeatherScreen(
                     Text(dailyWeather.temp?.locationName?: "N/A", color = PrimaryFontColor, fontWeight = FontWeight.Bold)
                 }
                 Row {
-                    IconButton(onClick = { Toast.makeText(context, "Under construction", Toast.LENGTH_SHORT).show() }) {
+                    IconButton(onClick = onNavigateToLocationWeather) {
                         Icon(Icons.Outlined.Search, contentDescription = null, tint = PrimaryColor)
                     }
                     IconButton(onClick = { Toast.makeText(context, "Under construction", Toast.LENGTH_SHORT).show() }) {
@@ -245,7 +248,8 @@ fun HomeScreenPreview(){
             dailyWeather = weather,
             onRefresh = onRefresh,
             isRefreshing,
-            onNavigateToForecastWeather = {item -> }
+            onNavigateToForecastWeather = {item -> },
+            onNavigateToLocationWeather = {},
         )
     }
 }

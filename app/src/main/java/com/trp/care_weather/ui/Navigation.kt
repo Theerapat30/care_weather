@@ -24,6 +24,8 @@ import com.trp.care_weather.feature.dailyweather.navigation.DailyWeatherRoute
 import com.trp.care_weather.feature.dailyweather.ui.DailyWeatherScreen
 import com.trp.care_weather.feature.forecastweather.navigation.ForecastWeatherRoute
 import com.trp.care_weather.feature.forecastweather.ui.ForecastWeatherScreen
+import com.trp.care_weather.feature.locationweather.navigation.LocationWeatherRoute
+import com.trp.care_weather.feature.locationweather.ui.LocationWeatherScreen
 
 @Composable
 fun MainNavigation() {
@@ -36,11 +38,24 @@ fun MainNavigation() {
                     navController.navigate(
                         route = ForecastWeatherRoute(dateTime = dateTime, latitude = lat, longitude = lon)
                     )
+                },
+                onNavigateToLocationWeather = {
+                    navController.navigate(
+                        route = LocationWeatherRoute
+                    )
                 }
             )
         }
         composable<ForecastWeatherRoute> {
             ForecastWeatherScreen(
+                onBackStack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable<LocationWeatherRoute> {
+            LocationWeatherScreen(
                 onBackStack = {
                     navController.popBackStack()
                 }
