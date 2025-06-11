@@ -33,7 +33,7 @@ class OpenWeatherApiTest {
 
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-        val client = OkHttpClient.Builder().addInterceptor(interceptor);
+        val client = OkHttpClient.Builder().addInterceptor(interceptor)
         val okHttpClient = client.build()
 
         val json = Json { ignoreUnknownKeys = true }
@@ -64,7 +64,7 @@ class OpenWeatherApiTest {
     @Test
     fun getCurrentWeather_incorrectLocationName_shouldNotReturnData() = runTest{
         try {
-            val model = openWeatherApi!!.getCurrentWeather(location = "Ba", key = key)
+            openWeatherApi!!.getCurrentWeather(location = "Ba", key = key)
         } catch (e: HttpException){
             Assert.assertEquals(404, e.code())
         }

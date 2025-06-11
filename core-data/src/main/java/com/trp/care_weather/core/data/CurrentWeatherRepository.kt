@@ -1,6 +1,5 @@
 package com.trp.care_weather.core.data
 
-import android.net.http.HttpException
 import com.trp.care_weather.core.data.model.Temp
 import com.trp.care_weather.core_network.di.OpenWeatherApiKey
 import com.trp.care_weather.core_network.open_weather.OpenWeatherApi

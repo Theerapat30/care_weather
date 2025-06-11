@@ -51,7 +51,7 @@ class GetDailyWeatherNetworkUseCase @Inject constructor(
     }
 
     override suspend fun findByLocationName(locationName: String): DailyWeather? = withContext(Dispatchers.Default){
-        var currentWeather: Temp? = null
+        var currentWeather: Temp?
         val currentWeatherResult = currentWeatherRepository.getWeather(locationName)
         if (currentWeatherResult is Result.Success){
             currentWeather = currentWeatherResult.data
