@@ -10,6 +10,7 @@ import com.trp.care_weather.core.data.model.Temp
 import com.trp.care_weather.core.data.Result
 import com.trp.care_weather.core.data.di.weatherDummy
 import com.trp.care_weather.core.data.model.DailyWeather
+import com.trp.care_weather.core_domain.GetDailyWeatherUseCase
 import com.trp.care_weather.feature.locationweather.navigation.LocationWeatherRoute
 import com.trp.core_utils.DateUtils
 import com.trp.core_utils.MessageUtils
@@ -23,16 +24,33 @@ import javax.inject.Inject
 @HiltViewModel
 class LocationWeatherViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val currentWeatherRepository: CurrentWeatherRepository,
+    private val getDailyWeatherUseCase: GetDailyWeatherUseCase,
 ) : ViewModel() {
     private val TAG = LocationWeatherViewModel::class.java.simpleName
 
     private val locationWeather = savedStateHandle.toRoute<LocationWeatherRoute>()
 
-    val uiState = MutableStateFlow(LocationWeatherUiState(isLoading = true, dailyWeather = weatherDummy))
+    val uiState = MutableStateFlow(LocationWeatherUiState(isLoading = true, dailyWeather = null))
 
-    private fun fetchLocationWeather(){
+    fun fetchWeatherByLocationName(locationName: String){
         viewModelScope.launch {
+            uiState.update { it.copy(isLoading = true) }
+            val result = getDailyWeatherUseCase.findByLocationName(locationName)
+            if (result == null){
+                uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "No data found"
+                    )
+                }
+                return@launch
+            }
+            uiState.update {
+                it.copy(
+                    isLoading = false,
+                    dailyWeather = result
+                )
+            }
 
         }
     }

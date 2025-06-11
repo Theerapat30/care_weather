@@ -1,6 +1,7 @@
 package com.trp.care_weather.core.data.model
 
 import com.trp.core_utils.DateUtils
+import java.time.LocalDate
 import java.time.LocalTime
 
 data class DailyWeather (
@@ -12,6 +13,13 @@ data class DailyWeather (
         val now = LocalTime.now()
         return tempForecastList?.filter { item ->
             DateUtils.isTimeAfterHour(hour = 3, time = now, specificTime = item.localTime)
+        } ?: listOf()
+    }
+
+    fun forecastWeatherToday(): List<Temp>{
+        val now = LocalDate.now()
+        return tempForecastList?.filter { item ->
+            item.localDate.isEqual(now)
         } ?: listOf()
     }
 }

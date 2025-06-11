@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import retrofit2.HttpException
 import retrofit2.Retrofit
 
 class OpenWeatherApiTest {
@@ -51,6 +52,22 @@ class OpenWeatherApiTest {
         val model = openWeatherApi!!.getCurrentWeather(latitude = lat, longitude = lon, key = key)
         println(model)
         Assert.assertNotNull(model)
+    }
+
+    @Test
+    fun getCurrentWeather_locationName_shouldReturnData() = runTest{
+        val model = openWeatherApi!!.getCurrentWeather(location = "Bangkok", key = key)
+        println(model)
+        Assert.assertNotNull(model)
+    }
+
+    @Test
+    fun getCurrentWeather_incorrectLocationName_shouldNotReturnData() = runTest{
+        try {
+            val model = openWeatherApi!!.getCurrentWeather(location = "Ba", key = key)
+        } catch (e: HttpException){
+            Assert.assertEquals(404, e.code())
+        }
     }
 
     @Test

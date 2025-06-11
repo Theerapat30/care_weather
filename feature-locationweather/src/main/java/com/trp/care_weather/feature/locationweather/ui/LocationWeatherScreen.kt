@@ -57,6 +57,7 @@ import com.trp.care_weather.core.ui.R
 import com.trp.care_weather.core.ui.SecondaryColor
 import com.trp.care_weather.core.ui.composes.AirPollutionItem
 import com.trp.care_weather.core.ui.composes.TempForecastItem
+import kotlinx.coroutines.flow.update
 import kotlin.collections.forEach
 
 @SuppressLint("MissingPermission")
@@ -68,12 +69,18 @@ fun LocationWeatherScreen(
     
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    if (uiState.errorMessage != null){
+        Toast.makeText(LocalContext.current, uiState.errorMessage, Toast.LENGTH_SHORT).show()
+        viewModel.uiState.update { it.copy(errorMessage = null) }
+    }
+
     LocationWeatherScreen(
         onBackStack = onBackStack,
         titleName = "Location Weather",
         weather = uiState.dailyWeather,
         onSearchLocation = { locationName ->
             Log.d("TAG", "LocationWeatherScreen: $locationName")
+            viewModel.fetchWeatherByLocationName(locationName)
         },
     )
 
@@ -124,9 +131,11 @@ internal fun LocationWeatherScreen(
                 weather = weather
             )
 
+            Spacer(modifier = Modifier.height(32.dp))
+
             TempForecastPanel(
                 modifier = Modifier.fillMaxWidth(),
-                temps = weather.forecastWeathersFromCurrentTime(),
+                temps = weather.forecastWeatherToday(),
                 onItemSelected = {}
             )
         }
@@ -256,7 +265,7 @@ fun TempForecastPanel(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         temps.forEach { item ->
-            TempForecastItem(item = item, onItemSelected = onItemSelected)
+            TempForecastItem(item = item, onItemSelected = onItemSelected, color = SecondaryColor)
         }
     }
 }

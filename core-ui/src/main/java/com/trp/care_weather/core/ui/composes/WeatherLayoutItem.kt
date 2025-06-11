@@ -36,7 +36,7 @@ import com.trp.care_weather.core.ui.SecondaryFontColor
 import com.trp.care_weather.core.ui.Typography
 
 @Composable
-fun TempForecastItem(item: Temp, onItemSelected: (Temp) -> Unit){
+fun TempForecastItem(item: Temp, onItemSelected: (Temp) -> Unit, color: Color = PrimaryFontColor){
     Card(
         modifier = Modifier
             .width(65.dp)
@@ -52,14 +52,14 @@ fun TempForecastItem(item: Temp, onItemSelected: (Temp) -> Unit){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = item.tempDisplay, color = PrimaryFontColor, style = Typography.bodySmall)
+            Text(text = item.tempDisplay, color = color, style = Typography.bodySmall)
             Icon(painterResource(R.drawable.ic_pressure_24), contentDescription = null, tint = PrimaryColor)
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(text = item.dayMonthDisplay(), color = PrimaryFontColor, style = Typography.bodySmall)
-                Text(text = item.time(), color = PrimaryFontColor, style = Typography.bodySmall)
+                Text(text = item.dayMonthDisplay(), color = color, style = Typography.bodySmall)
+                Text(text = item.time(), color = color, style = Typography.bodySmall)
             }
         }
     }
