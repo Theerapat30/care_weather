@@ -6,7 +6,7 @@ targetSdk = "35"
 versionMajor = "1"
 versionMinor = "0"
 versionPatch = "0"
-versionBuild = "8"
+versionBuild = "9"
 
 jvmVersion = "21"
 androidGradlePlugin = "8.9.2"

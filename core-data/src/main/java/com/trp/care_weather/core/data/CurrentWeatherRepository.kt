@@ -1,6 +1,5 @@
 package com.trp.care_weather.core.data
 
-import android.net.http.HttpException
 import com.trp.care_weather.core.data.model.Temp
 import com.trp.care_weather.core_network.di.OpenWeatherApiKey
 import com.trp.care_weather.core_network.open_weather.OpenWeatherApi
@@ -30,9 +29,11 @@ class CurrentWeatherNetworkRepository @Inject constructor(
                     tempMax = weatherApiModel.tempMainApiModel.tempMax,
                     tempMin = weatherApiModel.tempMainApiModel.tempMin,
                     dateTime = weatherApiModel.dt,
-                    locationName = weatherApiModel.name
+                    locationName = weatherApiModel.name,
+                    lat = weatherApiModel.coord.lat,
+                    lon = weatherApiModel.coord.lon,
                 ))
-            } catch (e: HttpException){
+            } catch (e: Exception){
                 Result.Error(e)
             }
         }
@@ -57,7 +58,7 @@ class CurrentWeatherNetworkRepository @Inject constructor(
                     dateTime = weatherApiModel.dt,
                     locationName = weatherApiModel.name
                 ))
-            } catch (e: HttpException){
+            } catch (e: Exception){
                 Result.Error(e)
             }
         }

@@ -2,6 +2,7 @@ package com.trp.care_weather.core.data.model
 
 import com.trp.core_utils.DateUtils
 import com.trp.core_utils.MessageUtils
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -11,7 +12,9 @@ data class Temp(
     val tempMax: Double,
     val tempMin: Double,
     val dateTime: Long = DateUtils.dateToUtc(LocalDateTime.now()),
-    val locationName: String? = null
+    val locationName: String? = null,
+    val lat: Double? = null,
+    val lon: Double? = null,
 ){
     val tempDisplay get() = "$temp  ํ"
     val tempFeelsDisplay get() = "$tempFeels  ํ"
@@ -29,6 +32,8 @@ data class Temp(
     }
 
     val localTime: LocalTime get() = DateUtils.utcToDate(dateTime).toLocalTime()
+
+    val localDate: LocalDate get() = DateUtils.utcToDate(dateTime).toLocalDate()
 
     val dateRepresent get() = run {
         val date = DateUtils.utcToDate(dateTime)
